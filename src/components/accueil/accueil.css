@@ -1,0 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap");
+
+.accueil {
+  font-family: "Montserrat", sans-serif;
+  height: calc(100vh - 3rem);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.accueil div {
+  margin-right: 17rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 29rem;
+}
+
+.accueil div p {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 500;
+  line-height: 50px;
+  margin-bottom: 3rem;
+  background: linear-gradient(
+    90.21deg,
+    #dfa716 0.38%,
+    #ea3f40 49.46%,
+    #3d8c1f 102.44%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.accueil button {
+  background: linear-gradient(90.88deg, #cc6064 0%, #df3037 110.8%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 1rem;
+  width: 14rem;
+  /* border: 2px solid linear-gradient(90.88deg, #cc6064 0%, #df3037 110.8%); */
+  border-radius: 37px;
+  /* border: 3px solid; */
+  /* border-image-source: linear-gradient(94.2deg, #dc5900 0%, #c06f19 105.28%); */
+  /* border-width: 2px; */
+  /* border-color: linear-gradient(90.88deg, #cc6064 0%, #df3037 110.8%); */
+}
+
+.accueil::after {
+  content: "";
+  background-size: contain;
+  pointer-events: none;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 80%;
+  height: calc(100vh - 3rem);
+
+  /* height: inherit; */
+}
+
+.visit-shop::before {
+  content: "";
+  background: url("../../assets/images/bg-img.png") no-repeat;
+  background-size: contain;
+  pointer-events: none;
+  position: absolute;
+  top: -30px;
+  left: 0%;
+  width: 30rem;
+  height: 40rem;
+}

@@ -1,0 +1,54 @@
+@import url("https://fonts.googleapis.com/css2?family=Vibur&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap");
+
+.nav-bar {
+  font-family: "Vibur", cursive;
+  height: 3.5rem;
+  padding: 0 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.15);
+}
+
+.nav-logo a {
+  flex: 1;
+  color: #bd2b32;
+  font-size: 2rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: space-between;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  width: 28%;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: black;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+.login-register {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.login-register button {
+  background-color: #bd2b32;
+  border: none;
+  border-radius: 6px;
+  width: 6rem;
+  margin: 0 1rem;
+  padding: 0.7rem 1rem;
+  font-size: 0.9rem;
+  color: white;
+  cursor: pointer;
+}
