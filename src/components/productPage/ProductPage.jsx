@@ -3,7 +3,6 @@ import {
   Button,
   createTheme,
   FormControl,
-  IconButton,
   InputLabel,
   MenuItem,
   Select,
@@ -12,11 +11,16 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import prodImg from "../../assets/images/banane.jpg";
+// import prodImg from "../../assets/images/banane.jpg";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addProduct } from "../../features/slices/cart/cartSlice";
 
 const ProductPage = () => {
+  const { state } = useLocation();
   const [quantite, setQuantite] = React.useState(1);
+  const dispatch = useDispatch();
 
   const handleChange = (event) => {
     setQuantite(event.target.value);
@@ -44,7 +48,7 @@ const ProductPage = () => {
         m: 7,
       }}
     >
-      <Box component="img" sx={{ width: "40%" }} src={prodImg} />
+      <Box component="img" sx={{ width: "40%" }} src={state.product.image} />
       <Box
         sx={{
           display: "flex",
@@ -59,15 +63,17 @@ const ProductPage = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Typography variant="h4">Banane</Typography>
-          <Typography variant="h6">500 FCFA / kg</Typography>
+          <Typography variant="h4">{state.product.title}</Typography>
+          <Typography variant="h6">{state.product.price} FCFA / kg</Typography>
         </Stack>
-        <Typography variant="body1" textAlign="justify">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi numquam
-          repellat excepturi, molestias tenetur reiciendis fugiat officia
-          dolores sint at praesentium? Asperiores pariatur a accusamus ratione
-          natus amet placeat perferendis.
-        </Typography>
+        <Stack direction="column">
+          <Typography sx={{ mb: 3 }} variant="h6">
+            Description
+          </Typography>
+          <Typography variant="body1" textAlign="justify">
+            {state.product.description}
+          </Typography>
+        </Stack>
         <Stack
           direction="row"
           justifyContent="space-between"
@@ -98,6 +104,9 @@ const ProductPage = () => {
               sx={{ width: 250, height: "3.5rem" }}
               color="dark"
               variant="contained"
+              onClick={() =>
+                dispatch(addProduct({ ...state.product, quantite }))
+              }
             >
               <Typography
                 variant="h6"

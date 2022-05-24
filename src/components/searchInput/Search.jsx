@@ -1,7 +1,20 @@
+import React from "react";
+
 import { IconButton, InputBase, Paper } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { useLocation } from "react-router-dom";
 
 const Search = () => {
+  const location = useLocation();
+
+  if (
+    location.pathname.includes("login") ||
+    location.pathname.includes("register") ||
+    location.pathname.includes("order") ||
+    location.pathname.includes("admin")
+  ) {
+    return;
+  }
   return (
     <Paper
       component="form"

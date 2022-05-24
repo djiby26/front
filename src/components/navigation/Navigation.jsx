@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Box } from "@mui/system";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -5,7 +7,6 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import SearchIcon from "@mui/icons-material/Search";
 import Badge from "@mui/material/Badge";
 import LinkTab from "./LinkTab";
 import {
@@ -20,8 +21,13 @@ import {
 } from "@mui/material";
 import { Logout } from "@mui/icons-material";
 import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../features/slices/auth/authSlice";
 
 const Navigation = () => {
+  const { user } = useSelector((state) => state.auth);
+  const location = useLocation();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -31,11 +37,24 @@ const Navigation = () => {
     setAnchorEl(null);
   };
 
+  const dispatch = useDispatch();
+
+  const cartState = useSelector((state) => state.cart);
+  const navigate = useNavigate();
   const [value, setValue] = useState("home");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  if (
+    location.pathname.includes("login") ||
+    location.pathname.includes("register") ||
+    location.pathname.includes("order") ||
+    location.pathname.includes("admin")
+  ) {
+    return;
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -86,12 +105,13 @@ const Navigation = () => {
           </Tabs>
           <Stack direction="row" spacing={2}>
             <IconButton
+              onClick={() => navigate("/cart")}
               title="shopping cart"
               aria-label="success"
               color="inherit"
               sx={{ color: "white" }}
             >
-              <Badge badgeContent={0} color="secondary">
+              <Badge badgeContent={cartState.quantiteProd} color="secondary">
                 <ShoppingCartIcon fontSize="medium" />
               </Badge>
             </IconButton>
@@ -145,19 +165,32 @@ const Navigation = () => {
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            <MenuItem>
-              <Avatar /> Profile
-            </MenuItem>
-            <MenuItem>
-              <Avatar /> Sign-in
-            </MenuItem>
-            <Divider />
-            <MenuItem>
-              <ListItemIcon>
-                <Logout fontSize="small" />
-              </ListItemIcon>
-              Logout
-            </MenuItem>
+            {user && (
+              <MenuItem>
+                <Avatar /> Profile
+              </MenuItem>
+            )}
+            {!user && [
+              <MenuItem onClick={() => navigate("/login")} key="1">
+                <Avatar /> Sign-in
+              </MenuItem>,
+              <MenuItem onClick={() => navigate("/register")} key="2">
+                <Avatar /> Sign-up
+              </MenuItem>,
+            ]}
+            {user && user.isAdmin && (
+              <MenuItem onClick={() => navigate("/admin")} key="2">
+                <Avatar /> Administration
+              </MenuItem>
+            )}
+            {user && (
+              <MenuItem onClick={() => dispatch(logout())}>
+                <ListItemIcon>
+                  <Logout fontSize="small" />
+                </ListItemIcon>
+                Logout
+              </MenuItem>
+            )}
           </Menu>
         </Toolbar>
       </AppBar>

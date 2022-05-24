@@ -13,14 +13,15 @@ const CardItem = ({ product }) => {
   return (
     //Plan to use mui skeleton when fetching data
     <Card
-      // onClick={() => navigate("/product", { state: { product } })}
+      onClick={() => navigate("/product", { state: { product } })}
       sx={{
-        Width: 200,
-        Height: 250,
+        Width: 70,
+        Height: 140,
         cursor: "pointer",
         mt: "20px",
-        borderRadius: "15px",
-        boxShadow: "  0px 0px 14px rgba(0, 0, 0, 0.17)",
+        p: 0,
+        borderRadius: "10px",
+        boxShadow: "  0px 0px 14px rgba(0, 0, 0, 0.076)",
       }}
     >
       <CardMedia
@@ -30,7 +31,7 @@ const CardItem = ({ product }) => {
       />
       <CardContent sx={{ p: "10px" }}>
         <Typography variant="h6" sx={{ fontSize: "1rem", fontWeight: "bold" }}>
-          {product.name}
+          {product.title}
         </Typography>
         <Divider sx={{ mt: 1, mb: 1 }}></Divider>
         <Stack
