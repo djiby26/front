@@ -22,11 +22,17 @@ import Products from "./pages/Products";
 import Orders from "./pages/Orders";
 import Users from "./pages/Users";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Admin = () => {
   const [currentPage, SetCurrentPage] = useState(<Orders />);
   const drawerWidth = 240;
   const location = useLocation();
+  const currentUser = useSelector((state) => state.auth.user);
+
+  if (!currentUser.isAdmin) {
+    return <h4>Pas autorise</h4>;
+  }
 
   if (!location.pathname.includes("/admin")) {
     return;
