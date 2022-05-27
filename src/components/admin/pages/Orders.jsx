@@ -14,6 +14,7 @@ import {
   setOrderState,
 } from "../../../features/slices/order/orderSlice";
 import { toast } from "react-toastify";
+import { Typography } from "@mui/material";
 
 const columns = [
   { id: "order", label: "# Order Id", minWidth: 170 },
@@ -37,6 +38,12 @@ const columns = [
     minWidth: 170,
     align: "right",
   },
+  // {
+  //   id: "image",
+  //   minWidth: 170,
+  //   align: "right",
+  //   renderCell: () => <img src="../../../assets/images/banane.jpg" />,
+  // },
 ];
 
 function createData(order, name, address, status, total, date) {
@@ -82,6 +89,12 @@ export default function StickyHeadTable() {
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      <Typography
+        sx={{ ml: 2, mt: 2, fontWeight: "bold", color: "gray" }}
+        variant="h6"
+      >
+        Liste des commandes
+      </Typography>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -105,7 +118,6 @@ export default function StickyHeadTable() {
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                     {columns.map((column) => {
                       const value = row[column.id];
-                      console.log(value);
                       return (
                         <TableCell key={column.id} align={column.align}>
                           {column.format && typeof value === "number"

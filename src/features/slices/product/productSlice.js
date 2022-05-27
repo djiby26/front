@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchProducts } from "./productService";
+import { toast } from "react-toastify";
+import { addProduct, fetchProducts } from "./productService";
 
 const initialState = {
   products: [],
@@ -11,10 +12,18 @@ const productSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchProducts.fulfilled, (state, action) => {
-      state.products = action.payload;
-      state.status = "success";
-    });
+    builder
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.products = action.payload;
+        state.status = "success";
+      })
+      .addCase(addProduct.fulfilled, (state, action) => {
+        state.products.push(action.payload);
+        toast.success("Product created");
+      })
+      .addCase(addProduct.rejected, (state, action) => {
+        toast.error("Error when creating product");
+      });
   },
 });
 

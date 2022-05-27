@@ -10,3 +10,17 @@ export const fetchProducts = createAsyncThunk(
     return response.data;
   }
 );
+
+export const addProduct = createAsyncThunk(
+  "product/addProducts",
+  async ({ product, token }, { fulfillWithValue, rejectWithValue }) => {
+    try {
+      const response = await axios.post(apiUrl, product, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return fulfillWithValue(response.data);
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
