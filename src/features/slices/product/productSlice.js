@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { addProduct, fetchProducts } from "./productService";
+import { addProduct, fetchOneProduct, fetchProducts } from "./productService";
 
 const initialState = {
   products: [],
+  currentProduct: null,
   status: "pending",
 };
 
@@ -23,6 +24,9 @@ const productSlice = createSlice({
       })
       .addCase(addProduct.rejected, (state, action) => {
         toast.error("Error when creating product");
+      })
+      .addCase(fetchOneProduct.fulfilled, (state, action) => {
+        state.currentProduct = action.payload;
       });
   },
 });

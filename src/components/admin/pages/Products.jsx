@@ -8,25 +8,25 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { useDispatch, useSelector } from "react-redux";
-
 import { toast } from "react-toastify";
 import { Typography } from "@mui/material";
 import { fetchProducts } from "../../../features/slices/product/productService";
+import { useNavigate } from "react-router-dom";
 
 const columns = [
+  { id: "image", label: "Image", minWidth: 100 },
   { id: "title", label: "Product", minWidth: 170 },
-  { id: "price", label: "Prix", minWidth: 100 },
+  { id: "price", label: "Prix (CFA)", minWidth: 100 },
   { id: "category", label: "Categorie", minWidth: 100 },
   {
     id: "stockQuantity",
-    label: "Stock",
-    // minWidth: 170,
+    label: "Stock (kg)",
     align: "right",
   },
 ];
 
-function createData(title, price, category, stockQuantity) {
-  return { title, price, category, stockQuantity };
+function createData(image, title, price, category, stockQuantity) {
+  return { image, title, price, category, stockQuantity };
 }
 
 export default function StickyHeadTable() {
@@ -35,12 +35,11 @@ export default function StickyHeadTable() {
   const user = useSelector((state) => state.auth.user);
   const { token } = user;
 
-  // React.useEffect(() => {
-  //   dispatch(fetchProducts());
-  // }, [user, dispatch]);
+  const navigate = useNavigate();
 
   const rows = products.map((product) =>
     createData(
+      product.image,
       product.title,
       product.price,
       product.category,
@@ -86,16 +85,35 @@ export default function StickyHeadTable() {
           <TableBody>
             {rows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
+              .map((row, index) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                  <TableRow
+                    onClick={() =>
+                      navigate(`/admin/product`, {
+                        state: { productId: products[index]._id },
+                      })
+                    }
+                    sx={{ cursor: "pointer" }}
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={row.code}
+                  >
                     {columns.map((column) => {
                       const value = row[column.id];
+
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          {column.format && typeof value === "number"
-                            ? column.format(value)
-                            : value}
+                          {column.id === "image" ? (
+                            <img
+                              style={{ borderRadius: "50%", height: "3rem" }}
+                              src={value}
+                            />
+                          ) : column.format && typeof value === "number" ? (
+                            column.format(value)
+                          ) : (
+                            value
+                          )}
                         </TableCell>
                       );
                     })}

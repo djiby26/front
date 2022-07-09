@@ -16,6 +16,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import Order from "./components/order/Order";
 import Admin from "./components/admin/Admin";
+import UpdateProduct from "./components/admin/pages/UpdateProduct";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Accueil />} />
           <Route path="/product" element={<ProductPage />} />
+          <Route path="/admin/product" element={<UpdateProduct />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/order" element={<Order />} />
           <Route path="/admin" element={<Admin />} />

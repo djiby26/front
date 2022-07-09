@@ -1,33 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import { MenuItem, Select } from "@mui/material";
+import {
+  FormControlLabel,
+  FormGroup,
+  MenuItem,
+  Select,
+  Switch,
+  Typography,
+} from "@mui/material";
+import { createUser } from "../../../features/slices/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const AddNewUser = () => {
+  const [adminState, setAdminState] = useState(false);
+  const { token } = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+
+  const handleAdminChange = () => {
+    setAdminState(!adminState);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-
     const data = new FormData(event.currentTarget);
 
-    // if (data.get("password") !== data.get("password2")) {
-    //   toast.error("Passwords do not match");
-    // } else {
-    //   dispatch(
-    //     register({
-    //       username: data.get("username"),
-    //       email: data.get("email"),
-    //       password: data.get("password"),
-    //     })
-    //   );
-    // }
+    if (data.get("password") !== data.get("password2")) {
+      toast.error("Passwords do not match");
+    } else {
+      dispatch(
+        createUser({
+          userData: {
+            username: data.get("username"),
+            email: data.get("email"),
+            password: data.get("password"),
+            isAdmin: adminState,
+          },
+          token,
+        })
+      );
+    }
   };
 
   return (
     <Container component="main">
+      <Typography
+        sx={{ ml: 2, mt: 2, fontWeight: "bold", color: "gray" }}
+        variant="h6"
+      >
+        Liste des commandes
+      </Typography>
       <CssBaseline />
       <Box
         sx={{
@@ -49,63 +76,44 @@ const AddNewUser = () => {
               />
             </Grid>
             <Grid item xs={6}>
-              <Select
-                fullWidth
-                required
-                id="category"
-                // value={age}
-                label="Category"
-                name="category"
-                // onChange={handleChange}
-              >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
-            </Grid>
-            <Grid item xs={6}>
               <TextField
                 required
                 fullWidth
-                name="description"
-                label="Description"
-                type="text"
-                id="description"
-                // autoComplete="new-password"
+                name="email"
+                label="Email"
+                type="email"
+                id="email"
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
                 required
                 fullWidth
-                name="image"
-                label="Image"
-                type="text"
-                id="image"
-                // autoComplete="new-password"
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
                 required
                 fullWidth
-                name="stock"
-                label="Stock diponible"
-                type="number"
-                id="stock"
-                // autoComplete="new-password"
+                name="password2"
+                label="Confirm Password"
+                type="password"
+                id="password2"
               />
             </Grid>
             <Grid item xs={6}>
-              <TextField
-                required
-                fullWidth
-                name="prix"
-                label="Prix"
-                type="number"
-                id="prix"
-                // autoComplete="new-password"
-              />
+              <FormGroup>
+                <FormControlLabel
+                  value={adminState}
+                  onChange={handleAdminChange}
+                  control={<Switch />}
+                  label="Is Admin"
+                />
+              </FormGroup>
             </Grid>
           </Grid>
           <Button
@@ -114,7 +122,7 @@ const AddNewUser = () => {
             variant="contained"
             sx={{ mt: 3, mb: 2, width: "20%" }}
           >
-            Ajouter Produit
+            Creer Utilisateur
           </Button>
         </Box>
       </Box>

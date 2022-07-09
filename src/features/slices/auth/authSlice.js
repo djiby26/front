@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import authService from "./authService";
 
 // Get user from localStorage
@@ -6,6 +7,7 @@ const user = JSON.parse(localStorage.getItem("user"));
 
 const initialState = {
   user: user ? user : null,
+  users: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -18,6 +20,23 @@ export const register = createAsyncThunk(
   async (user, thunkAPI) => {
     try {
       return await authService.register(user);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const createUser = createAsyncThunk(
+  "auth/newUser",
+  async ({ userData, token }, thunkAPI) => {
+    try {
+      return await authService.createUser(userData, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -90,6 +109,13 @@ const authSlice = createSlice({
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
+      })
+      .addCase(createUser.fulfilled, (state, action) => {
+        state.users.push(action.payload);
+        toast.success(`User ${action.payload.username} created`);
+      })
+      .addCase(createUser.rejected, (state, action) => {
+        toast.error(`User creation failed ${action.payload}`);
       });
   },
 });

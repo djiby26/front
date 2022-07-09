@@ -65,12 +65,12 @@ const Order = () => {
           <Button
             sx={{ mt: 4, p: 2 }}
             variant="contained"
-
-            // onClick={() => navigate("/")}
+            onClick={() => navigate("/")}
           >
-            <Link href="/" color="white">
-              Retourner a l'accueil
-            </Link>
+            Retourner a l'accueil
+            {/* <Link href="/"> */}
+            {/* <span color="white"> Retourner a l'accueil</span> */}
+            {/* </Link> */}
           </Button>
         </>
       ) : (
